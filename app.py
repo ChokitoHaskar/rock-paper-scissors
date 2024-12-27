@@ -1,42 +1,52 @@
-import bot_logic as ai_choice
+from random import SystemRandom
 
-hand_gesture = ["Rock", "Paper", "Scissors"]
-user = False
+hands = {
+    1: "✊",
+    2: "✋",
+    3: "✌",
+}
 
-while user == False:
-    user = int(input("1.Rock  2.Paper  3.Scissors \nChoose your hand(1, 2, or 3)\n"))
 
-    computer = ai_choice.generate_hand()
-    # computer[0] is the number
-    # computer[1] is the hand_gesture
+# Computer AI
+def bot_ai():
+    return SystemRandom().randint(1, 3)
 
-    if user < 1 or user > 3:
-        print("Input choice exceed the desire limit (1 - 3), please try again\n")
-        user = False
+
+print("\n🎊 Welcome to the game of simple ✊ Rock ✋ Paper ✌ Scissors!! 🎊\n")
+
+game_state = True
+
+while game_state:
+    print("1. ✊\n2. ✋\n3. ✌\n0. 👋")
+    try:
+        user = int(input("Select your hand:\n"))
+    except ValueError:
+        print(
+            "\nIt seems your input is not an integer number\nPlease, try input a number instead\n"
+        )
+        continue
+    if user == 0:
+        print("\nBye-Bye 👋\n")
+        game_state = False
+
+    elif user > 3 or user < 0:
+        print(
+            "\nIt seems your input is not included in the available option\nPlease try again.\n"
+        )
+        continue
+
     else:
-        print("\n" + hand_gesture[user - 1] + " against " + computer[1])
+        bot = bot_ai()
+        print(f"\nPlayer {hands[user]} against Computer {hands[bot]}")
+        if user == bot:
+            print("It's a Draw!!\n")
 
-        # Player hands : Rock
-        if user - 1 == 0:
-            if computer[0] == 0:
-                print("It's a DRAW\n")
-            elif computer[0] == 1:
-                print("You WIN\n")
-            elif computer[0] == 2:
-                print("You LOSE\n")
-        # Player hands : Paper
-        elif user - 1 == 1:
-            if computer[0] == 0:
-                print("You WIN\n")
-            elif computer[0] == 1:
-                print("It's a DRAW\n")
-            elif computer[0] == 2:
-                print("You LOSE\n")
-        # Player hands : Scissors
-        elif user - 1 == 2:
-            if computer[0] == 0:
-                print("You LOSE\n")
-            elif computer[0] == 1:
-                print("You WIN\n")
-            elif computer[0] == 2:
-                print("It's a DRAW\n")
+        else:
+            if (
+                (user == 1 and bot == 2)
+                or (user == 2 and bot == 3)
+                or (user == 3 and bot == 1)
+            ):
+                print("Computer Wins!!\n")
+            else:
+                print("Player Wins!!\n")
